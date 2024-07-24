@@ -15,7 +15,9 @@ logging.basicConfig(
 
 app = Client(
     "bot",
-    api_id=Config.APP_ID,
+    class Config:
+    APP_ID = "class Config:
+    APP_ID = "29426486"
     api_hash=Config.API_HASH,
     bot_token=Config.BOT_TOKEN,
     in_memory=True,

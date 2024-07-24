@@ -1,38 +1,38 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# (c) Thank you @LazyDeveloperr 
+# @Suhaib-Rashid-Dar
 
-# the logging things
+
+from config import Config
 import logging
-logging.basicConfig(level=logging.DEBUG,
-                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
+from pyrogram import Client, idle
+from pyromod import listen  # type: ignore
+from pyrogram.errors import ApiIdInvalid, ApiIdPublishedFlood, AccessTokenInvalid
 
-import os
+logging.basicConfig(
+    level=logging.WARNING, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
 
-# the secret configuration specific things
-if bool(os.environ.get("WEBHOOK", False)):
-    from sample_config import Config
-else:
-    from config import Config
+app = Client(
+    "bot",
+    api_id=Config.APP_ID,
+    api_hash=Config.API_HASH,
+    bot_token=Config.BOT_TOKEN,
+    in_memory=True,
+    plugins=dict(root="KASHMIR"),
+)
 
-import pyrogram
-logging.getLogger("pyrogram").setLevel(logging.WARNING)
 
-
-if __name__ == "__main__" :
-    # create download directory, if not exist
-    if not os.path.isdir(Config.DOWNLOAD_LOCATION):
-        os.makedirs(Config.DOWNLOAD_LOCATION)
-    plugins = dict(
-        root="plugins"
-    )
-    app = pyrogram.Client(
-        "BewafaAngelPriya",
-        bot_token=Config.TG_BOT_TOKEN,
-        api_id=Config.APP_ID,
-        api_hash=Config.API_HASH,
-        plugins=plugins
-    )
-    Config.AUTH_USERS.add(5976437467)
-    app.run()
+if __name__ == "__main__":
+    print("Starting the Bot...")
+    try:
+        app.start()
+    except (ApiIdInvalid, ApiIdPublishedFlood):
+        raise Exception("Your API_ID/API_HASH is not valid.")
+    except AccessTokenInvalid:
+        raise Exception("Your BOT_TOKEN is not valid.")
+    uname = app.get_me().username
+    print(f"@{uname} started successfully !")
+    idle()
+    app.stop()
+    print("Bot stopped. Bye !")

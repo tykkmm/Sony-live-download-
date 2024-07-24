@@ -19,7 +19,7 @@ app = Client(
     api_hash=Config.API_HASH,
     bot_token=Config.BOT_TOKEN,
     in_memory=True,
-    plugins=dict(root="KASHMIR"),
+    plugins=dict(root="Uploader"),
 )
 
 
